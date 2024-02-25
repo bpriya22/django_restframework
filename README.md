@@ -109,4 +109,4 @@ def snippet_list(request):
         return JsonResponse(serializer.errors, status=400)
 
  2. Note that because we want to be able to POST to this view from clients that won't have a CSRF token we need to mark the view as csrf_exempt.
- 3. 
+
