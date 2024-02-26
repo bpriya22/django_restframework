@@ -110,3 +110,40 @@ def snippet_list(request):
 
  2. Note that because we want to be able to POST to this view from clients that won't have a CSRF token we need to mark the view as csrf_exempt.
 
+ Requests and Responses
+=
+
+1. request.POST  # Only handles form data.  Only works for 'POST' method.
+request.data  # Handles arbitrary data.  Works for 'POST', 'PUT' and 'PATCH' methods.
+
+2. return Response(data)  # Renders to content type as requested by the client.
+
+Wrapping API views
+=
+
+1. The @api_view decorator for working with function based views.
+2. The APIView class for working with class-based views.
+3. Notice that we're no longer explicitly tying our requests or responses to a given content type. request.data can handle incoming json requests, but it can also handle other formats. Similarly we're returning response objects with data, but allowing REST framework to render the response into the correct content type for us.
+
+Adding optional format suffixes to our URLs
+=
+
+1. Using format suffixes gives us URLs that explicitly refer to a given format, and means our API will be able to handle URLs such as http://example.com/api/items/4.json.
+2. example:  def snippet_list(request, format=None):
+3. Now update the snippets/urls.py file slightly, to append a set of format_suffix_patterns in addition to the existing URLs.
+
+from django.urls import path
+from rest_framework.urlpatterns import format_suffix_patterns
+from snippets import views
+
+urlpatterns = [
+    path('snippets/', views.snippet_list),
+    path('snippets/<int:pk>/', views.snippet_detail),
+]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
+We don't necessarily need to add these extra url patterns in, but it gives us a simple, clean way of referring to a specific format.
+4. We can control the format of the response that we get back, either by using the Accept header:
+
+http http://127.0.0.1:8000/snippets/ Accept:application/json  # Request JSON
+http http://127.0.0.1:8000/snippets/ Accept:text/html         # Request HTML
