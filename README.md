@@ -147,3 +147,10 @@ We don't necessarily need to add these extra url patterns in, but it gives us a 
 
 http http://127.0.0.1:8000/snippets/ Accept:application/json  # Request JSON
 http http://127.0.0.1:8000/snippets/ Accept:text/html         # Request HTML
+
+
+
+ Class-based Views
+ =
+ 1. allows us to reuse common functionality, and helps us keep our code DRY.
+ 2. 
